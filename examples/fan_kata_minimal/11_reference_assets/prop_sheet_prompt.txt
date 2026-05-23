@@ -1,0 +1,26 @@
+Create a clean prop reference sheet for downstream video generation.
+
+Project:
+Fan Kata Minimal Fixture
+
+Prop:
+fan, sword, sleeves / fabric
+
+Purpose:
+This sheet controls the prop silhouette, scale, material, moving parts, allowed motion, and forbidden mutations. It is not a storyboard.
+
+Required sheet layout:
+- closed / neutral state
+- open / active state
+- side view and top view when useful
+- hand-held scale reference
+- material and color swatches
+- moving-part notes
+- allowed motion notes
+- forbidden mutation notes
+
+Source behavior from storyboard:
+# Beat Storyboard Plan ## P01 - Segment: S01 - Beat role: hook. - Timestamp: 0-3s. - Shot size: low medium close. - Action: fan snaps open across frame. - Camera: slight push-in. - Emotion: calm confidence. - Clean keyframe summary: fan open, eyes steady, sleeve beginning to lift. ## P02 - Segment: S01 - Beat role: anticipation. - Timestamp: 3-6s. - Shot size: wide readable stance. - Action: body lowers, sleeve settles, fan turns behind the shoulder. - Camera: side tracking. - Emotion: focused intensity. - Clean keyframe summary: lowered stance before acceleration. ## P03 - Segment: S01 - Beat role: burst. - Timestamp: 6-9s. - Shot size: dynamic wide. - Action: forward slash with torso rotation, fan arc, and sleeve trail. - Camera: fast tracking. - Emotion: controlled ferocity. - Clean keyframe summary: fan arc cutting across frame. ## P04 - Segment: S01 - Beat role: payoff. - Timestamp: 9-12s. - Shot size: hero wide. - Action: lands into a steady fan seal, cloth and hair settle. - Camera: settles with the body. - Emotion: composed finish. - Clean keyframe summary: final held pose with stable fan silhouette.
+
+Avoid:
+storyboard arrows, panel borders, action sequence panels, extra redesigned prop variants, floating autonomous prop motion unless explicitly required, logos, UI, subtitles, watermarks.

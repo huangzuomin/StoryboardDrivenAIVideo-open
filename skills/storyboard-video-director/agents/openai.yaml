@@ -1,0 +1,4 @@
+interface:
+  display_name: "Storyboard Video Director"
+  short_description: "Compile video ideas into storyboard-first director packs with required control assets"
+  default_prompt: "Use $storyboard-video-director to turn this video idea into a storyboard-driven director pack. For ordinary short-video or product-lock requests, prepare the required reference assets, video prompt, and readiness checks instead of stopping at text planning."

@@ -1,0 +1,3 @@
+# Core scripts use only the Python standard library.
+# Optional: install Pillow to let visual_asset_review.py inspect image sizes.
+Pillow>=10.0.0

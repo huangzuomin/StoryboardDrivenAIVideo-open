@@ -1,0 +1,5 @@
+Create a Segment S01 annotated storyboard control image for a 12s single continuous fan kata.
+
+Include P01 fan snap, P02 lowered anticipation, P03 explosive fan slash, and P04 steady fan seal.
+
+Use red for camera, blue for body path, green for fan and sleeve path, orange for impact pressure, and purple for timing.

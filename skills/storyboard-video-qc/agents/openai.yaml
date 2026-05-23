@@ -1,0 +1,4 @@
+interface:
+  display_name: "Storyboard Video QC"
+  short_description: "Preflight storyboard-video packs before video generation"
+  default_prompt: "Use $storyboard-video-qc to run a production preflight review on this storyboard director pack and tell me whether it is ready for video generation."

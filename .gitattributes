@@ -1,0 +1,9 @@
+# Keep internal research material out of generated source archives.
+production_packs/** export-ignore
+packs/** export-ignore
+outputs/** export-ignore
+storyboard-video-learning/** export-ignore
+merge_backups/** export-ignore
+docs/aimikoda_storyboard_learning_pack/** export-ignore
+docs/*iteration* export-ignore
+docs/folder_merge_report_* export-ignore

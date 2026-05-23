@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Local OS/editor state
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Generated director packs and local experiments
+/production_packs/
+/packs/
+/outputs/
+/merge_backups/
+/11_generated_storyboards/
+/12_video_generation_prompt/
+/cinematic_jump_rope_performance_storyboard/
+/foshan_shadowless_kick_15s_storyboard/
+
+# Private learning packs and non-redistributable references
+/storyboard-video-learning/
+/docs/aimikoda_storyboard_learning_pack/
+/docs/aimikoda_skill_iteration_research.md
+/docs/需求说明.md
+
+# Local one-off notes/prompts
+/raccoon_donut_chaos_storyboard_prompt.md
+/storyboard_video_director_skill_iteration_notes.md
+/skill方法论.md
+
+# Keep curated public examples tracked.
+!/examples/
+
+# Regression examples may generate reports/prompts during local runs.
+/examples/**/12_video_generation_prompt/
+/examples/**/13_xyq_video_handoff/
+/examples/**/15_preflight_qc.md
+/examples/**/15_visual_asset_review.*
+/examples/**/16_preproduction_orchestrator_report.*
+/examples/**/17_generation_handoff/
+/examples/**/17_generation_deployment/
+/examples/**/*_image_task.txt
+
+# Skill package noise
+/skills/**/CHANGELOG.md

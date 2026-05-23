@@ -1,0 +1,12 @@
+Create a 4-panel rough cinematic storyboard sheet for a fan kata performance.
+
+Use storyboard planning style, visible panel borders, panel numbers, and production annotations. Keep the base grayscale.
+
+Annotation color key: red camera, blue body movement, green fan path and sleeve trail, orange impact pressure, purple timing and pause.
+
+Panel 1: fan snap hook.
+Panel 2: lowered anticipation.
+Panel 3: explosive fan slash.
+Panel 4: steady fan seal finish.
+
+Make every panel readable as storyboard control, not polished illustration.

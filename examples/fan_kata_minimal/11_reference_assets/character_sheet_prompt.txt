@@ -1,0 +1,31 @@
+Create a clean character reference sheet for downstream video generation.
+
+Project:
+Fan Kata Minimal Fixture
+
+Subject:
+single ancient-style female fan performer
+
+Purpose:
+This is an identity reference, not a storyboard. It controls face, hair, body proportions, costume layers, silhouette, color palette, and recurring props. It must not include storyboard arrows, panel borders, shot numbers, action annotations, UI, subtitles, or logos.
+
+Required sheet layout:
+- full-body front view
+- full-body back view
+- left and right profile views
+- 3-5 head/face expression close-ups if facial identity matters
+- costume detail callouts: collar, sleeves, waist/sash, hem, footwear, hair ornament
+- neutral standing pose plus one small pose showing how the costume volume moves
+- simple color palette swatches
+- prop callout if relevant
+
+Identity lock:
+- Preserve the same face, hairstyle, hair accessories, body proportions, costume silhouette, costume layers, and palette across all views.
+- Keep the design usable for video generation: readable shapes, no excessive tiny ornaments, no contradictory outfits.
+- Central prop(s): fan, sword, sleeves / fabric.
+
+Visual Bible summary:
+# Visual Bible Main subject: a single ancient-style female fan performer in pale layered robes with long weighted sleeves. Location: moonlit ceremonial terrace with stone floor, banners, and light wind. Prop lock: folding fan with dark ribs and pale silk leaf. It opens, closes, snaps, slices, and rotates in hand. Do not morph it into a sword, ribbon, umbrella, or second fan. Movement system: body-driven fan logic. Fan trails follow wrist rotation, elbow path, torso torque, foot placement, and sleeve drag. Laban qualities move from glide and float to slash and dab accents, then return to bound control. Avoid: extra characters, broken wrists, extra limbs, prop mutation, random cuts, unreadable action, and a loose final pose.
+
+Avoid:
+storyboard panels, arrows, colored annotations, motion trails, cinematic camera notes, multiple unrelated outfits, redesigning the character between views, extra characters, logos, subtitles, UI, watermarks.

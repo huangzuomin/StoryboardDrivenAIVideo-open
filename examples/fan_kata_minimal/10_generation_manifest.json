@@ -1,0 +1,84 @@
+{
+  "project_title": "Fan Kata Minimal Fixture",
+  "workflow_version": "0.1.0-alpha",
+  "skill_versions": {
+    "storyboard-video-director": "0.1.0-alpha",
+    "storyboard-video-qc": "0.1.0-alpha"
+  },
+  "target_duration": "12s",
+  "aspect_ratio": "16:9",
+  "storyboard_type": "beat_storyboard",
+  "control_strategy": "hybrid",
+  "layout_pattern": "12_panel_rhythm_sheet",
+  "video_model": "seedance2",
+  "seedance2_segment_limit": "15s",
+  "user_hard_constraints": {
+    "target_duration": "12s",
+    "subject_identity": "single ancient-style female fan performer",
+    "location": "moonlit ceremonial terrace",
+    "required_final_payoff": "steady held fan seal",
+    "visual_style": "cinematic ancient fantasy action",
+    "explicit_exclusions": [
+      "extra characters",
+      "prop mutation",
+      "storyboard artifacts in final video"
+    ]
+  },
+  "reference_assets": {
+    "storyboard_control": {
+      "path": "11_generated_storyboards/storyboard_sheet_v01.png",
+      "status": "generated",
+      "role": "controls beat order, camera staging, action path, timing, composition, and emotional progression"
+    },
+    "character_reference": {
+      "path": "11_reference_assets/character_sheet_v01.png",
+      "status": "generated",
+      "role": "controls identity, costume, proportions, face, and body language"
+    },
+    "environment_reference": {
+      "path": "11_reference_assets/environment_reference_v01.png",
+      "status": "generated",
+      "role": "controls geography, props, lighting, weather, and spatial continuity"
+    },
+    "style_reference": {
+      "path": "11_reference_assets/style_reference_v01.png",
+      "status": "generated",
+      "role": "controls render finish, texture, palette, lens language, and style"
+    },
+    "clean_keyframe_reference": {
+      "path": "11_clean_keyframes/",
+      "status": "generated",
+      "role": "controls clean final-frame look without annotations"
+    },
+    "prop_reference": {
+      "path": "11_reference_assets/prop_sheet_v01.png",
+      "status": "generated",
+      "role": "controls central prop silhouette, scale, materials, moving parts, allowed motion, and forbidden mutations"
+    }
+  },
+  "visual_bible": "03_visual_bible.md",
+  "segments": [
+    {
+      "segment_id": "S01",
+      "duration": "12s",
+      "control_mode": "rhythm_performance_board",
+      "execution_mode": "single_continuous_shot",
+      "function": "fan kata from stillness to burst to held finish",
+      "reference_beats": [
+        "P01",
+        "P02",
+        "P03",
+        "P04"
+      ],
+      "clean_keyframes": [
+        "06_clean_keyframe_prompts/P01.txt",
+        "06_clean_keyframe_prompts/P02.txt",
+        "06_clean_keyframe_prompts/P03.txt",
+        "06_clean_keyframe_prompts/P04.txt"
+      ],
+      "prompt_file": "07_seedance2_segment_prompts/S01.txt",
+      "transition_out": "hold final fan seal",
+      "storyboard_prompt_file": "05_segment_storyboard_prompts/S01_storyboard_prompt.txt"
+    }
+  ]
+}

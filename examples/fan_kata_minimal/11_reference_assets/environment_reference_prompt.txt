@@ -1,0 +1,35 @@
+Create a clean environment reference sheet for downstream video generation.
+
+Project:
+Fan Kata Minimal Fixture
+
+Environment:
+moonlit ceremonial terrace
+
+Purpose:
+This is an environment and spatial-continuity reference, not a storyboard and not a final video frame. It controls geography, platforms, action lanes, water/ground surfaces, background props, lighting direction, weather/atmosphere, and repeated environmental anchors. It must not control character identity, action order, choreography, or final render style.
+
+Required sheet layout:
+- wide establishing view in 16:9
+- top-down or isometric spatial map showing action zones and camera-safe paths
+- 3/4 view of the main performance/action area
+- close callouts for repeated spatial anchors: platforms, stairs, banners, water edges, pillars, doors, railings, props, light sources
+- lighting and atmosphere swatches
+- foreground / midground / background separation
+- scale cue without introducing extra main characters
+
+Spatial lock:
+- Preserve the same geography across shots and Segments.
+- Keep action lanes open and readable for body movement, prop motion, cloth motion, and camera movement.
+- Make recurring landmarks easy to re-identify from different angles.
+- Keep water, platform edges, stairs, banners, and obstacles consistent in position and scale when present.
+- The reference may include small labels/callouts for production use, but it must not include storyboard panel borders, shot numbers, arrows, motion trails, subtitles, logos, UI, or watermarks.
+
+Visual Bible summary:
+# Visual Bible Main subject: a single ancient-style female fan performer in pale layered robes with long weighted sleeves. Location: moonlit ceremonial terrace with stone floor, banners, and light wind. Prop lock: folding fan with dark ribs and pale silk leaf. It opens, closes, snaps, slices, and rotates in hand. Do not morph it into a sword, ribbon, umbrella, or second fan. Movement system: body-driven fan logic. Fan trails follow wrist rotation, elbow path, torso torque, foot placement, and sleeve drag. Laban qualities move from glide and float to slash and dab accents, then return to bound control. Avoid: extra characters, broken wrists, extra limbs, prop mutation, random cuts, unreadable action, and a loose final pose.
+
+Beat / action geography summary:
+# Beat Storyboard Plan ## P01 - Segment: S01 - Beat role: hook. - Timestamp: 0-3s. - Shot size: low medium close. - Action: fan snaps open across frame. - Camera: slight push-in. - Emotion: calm confidence. - Clean keyframe summary: fan open, eyes steady, sleeve beginning to lift. ## P02 - Segment: S01 - Beat role: anticipation. - Timestamp: 3-6s. - Shot size: wide readable stance. - Action: body lowers, sleeve settles, fan turns behind the shoulder. - Camera: side tracking. - Emotion: focused intensity. - Clean keyframe summary: lowered stance before acceleration. ## P03 - Segment: S01 - Beat role: burst. - Timestamp: 6-9s. - Shot size: dynamic wide. - Action: forward slash with torso rotation, fan arc, and sleeve trail. - Camera: fast tracking. - Emotion: controlled ferocity. - Clean keyframe summary: fan arc cutting across frame. ## P04 - Segment: S01 - Beat role: payoff. - Timestamp: 9-12s. - Shot size: hero wide. - Action: lands into a steady fan seal, cloth and hair settle. - Camera: settles with the body. - Emotion: composed finish. - Clean keyframe summary: final held pose with stable fan silhouette.
+
+Avoid:
+storyboard panels, beat numbers, camera arrows, motion annotations, character sheets, isolated prop sheets, unrelated rooms, impossible geography, excessive decorative clutter, logos, subtitles, UI, watermarks.

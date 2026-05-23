@@ -112,6 +112,32 @@ For videos where a product, prop, character, or object must stay consistent, fil
 - `style_reference`: render finish, line quality, palette, and lens tone.
 - `clean_keyframe_reference`: clean final-frame targets without arrows, labels, borders, text, or UI.
 
+## Use the Outputs With Video Tools
+
+The `17_generation_handoff/` folder produced by `--phase final` is the boundary for downstream video generation. The same handoff pattern works for XYQ / Xiao Yun Que agents, Jimeng, Seedance2-style tools, or other video platforms that support image references:
+
+1. Open `17_generation_handoff/handoff_readiness_report.md` and make sure the verdict is `READY`.
+2. Upload only the image files listed in `17_generation_handoff/asset_manifest.json`.
+3. Keep each uploaded image mapped to its role, such as `@storyboard_control`, `@character_reference`, or `@prop_reference`.
+4. Use `17_generation_handoff/video_prompt_for_upload.txt` as the main video prompt.
+5. In the target tool, keep the Segment duration and order from the director pack. For Seedance2-style generation, one Segment should normally stay within the 5-15 second range.
+
+The key rule is to keep reference roles separate. Do not treat every image as a generic style reference. `storyboard_control` controls camera and action; `character_reference` controls identity; `prop_reference` controls the object or product; `style_reference` controls finish and look.
+
+For an XYQ / Xiao Yun Que agent workflow, create a starter agent manifest:
+
+```powershell
+python skills\storyboard-video-director\scripts\build_xyq_video_task.py <pack_dir> --init-manifest
+```
+
+Upload the images listed in `13_xyq_video_handoff/asset_manifest.json`, fill in the returned `asset_id` values, then build the agent task message:
+
+```powershell
+python skills\storyboard-video-director\scripts\build_xyq_video_task.py <pack_dir>
+```
+
+For Jimeng or other web video tools, you usually do not need an `asset_id` file. Upload the images from `17_generation_handoff/asset_manifest.json` and paste `video_prompt_for_upload.txt`. The final video should not render storyboard borders, arrows, panel numbers, labels, notes, UI, or watermarks; those are control artifacts only.
+
 ## Use With Codex
 
 The repository contains standard Codex skill folders. Install or load `skills/storyboard-video-director/` and `skills/storyboard-video-qc/` according to your Codex environment.

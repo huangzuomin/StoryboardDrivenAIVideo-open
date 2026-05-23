@@ -114,6 +114,32 @@ python skills\storyboard-video-director\scripts\preproduction_orchestrator.py <p
 - `style_reference`：控制渲染完成度、线条、色彩和镜头质感。
 - `clean_keyframe_reference`：控制干净最终画面，不应包含箭头、编号、边框、文字或 UI。
 
+## 接入下游视频工具
+
+`--phase final` 生成的 `17_generation_handoff/` 是给下游视频工具使用的边界。无论你使用小云雀 agent、即梦、Seedance2 类视频平台，还是其他支持参考图的视频工具，推荐按同一顺序使用：
+
+1. 打开 `17_generation_handoff/handoff_readiness_report.md`，确认 verdict 是 `READY`。
+2. 按 `17_generation_handoff/asset_manifest.json` 上传图片资产，只上传其中列出的图片文件。
+3. 把上传后的图片分别绑定到对应角色，例如 `@storyboard_control`、`@character_reference`、`@prop_reference`。
+4. 将 `17_generation_handoff/video_prompt_for_upload.txt` 作为主视频生成提示词。
+5. 在视频工具中选择目标模型和时长；如果工具支持 Seedance2 或同类 5-15 秒生成，优先保持 director pack 里的 Segment 时长和顺序。
+
+最重要的规则是：不要把所有参考图当成“风格参考”混在一起。`storyboard_control` 控制镜头和动作，`character_reference` 控制角色，`prop_reference` 控制产品或道具，`style_reference` 才控制画面风格。
+
+如果使用小云雀 agent，可以先生成一个 agent 消息草稿：
+
+```powershell
+python skills\storyboard-video-director\scripts\build_xyq_video_task.py <pack_dir> --init-manifest
+```
+
+上传 `13_xyq_video_handoff/asset_manifest.json` 中列出的图片后，把平台返回的 `asset_id` 填回该文件，再生成可发送给 agent 的任务消息：
+
+```powershell
+python skills\storyboard-video-director\scripts\build_xyq_video_task.py <pack_dir>
+```
+
+如果使用即梦或其他网页视频工具，通常不需要 `asset_id` 文件：直接上传 `17_generation_handoff/asset_manifest.json` 中的图片，并粘贴 `video_prompt_for_upload.txt` 即可。最终视频里不要渲染故事板边框、箭头、面板编号、标签、注释、UI 或水印；这些只用于生成时的控制和调度。
+
 ## 在 Codex 中使用
 
 本仓库包含标准 Codex skill 目录。你可以将 `skills/storyboard-video-director/` 和 `skills/storyboard-video-qc/` 安装到自己的 Codex skills 目录，或按你使用的 Codex 环境提供的方式加载本地 skill。

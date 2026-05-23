@@ -1,75 +1,160 @@
 # Storyboard Driven AI Video
 
-Storyboard Driven AI Video is a pair of Codex skills for building and checking storyboard-first AI video preproduction packs.
+Storyboard Driven AI Video is a set of Codex skills and Python scripts for **AI video preproduction**. It turns a plain video idea into a controllable director pack: storyboard structure, control strategy, reference asset roles, QC reports, and a generation handoff for downstream video models or agents.
 
-The project focuses on control before generation: plan the video as a director pack, create or register visual reference assets, run production QC, then hand off a clean upload prompt and asset manifest to a downstream video model or agent.
+This project does not render final videos. It focuses on the part that usually determines whether a video generation succeeds: **define how the video should be controlled before asking a model to generate it.**
 
-Default documentation is in Chinese: [README.md](README.md).
+Chinese documentation: [README.md](README.md)
 
-## What It Includes
+## Why This Exists
 
-- `storyboard-video-director`: turns a plain-language video idea into a structured director pack.
-- `storyboard-video-qc`: reviews a pack before expensive video generation.
-- Production handoff builder: creates upload-ready references and a prompt under `17_generation_handoff/`.
-- Regression utilities and public fixture packs for checking the workflow without private assets.
+Direct video prompts often fail in predictable ways:
+
+- A character, product, or prop changes between shots.
+- A storyboard becomes a nice image but does not control shot order, motion, or timing.
+- Character, prop, environment, and style references are mixed together, so the model cannot tell what each image should control.
+- Upload prompts accidentally include local paths, storyboard borders, arrows, labels, or other artifacts that should not appear in the final video.
+- Expensive generation starts before there is a readiness check.
+
+This repository breaks that work into a reviewable pipeline:
+
+```mermaid
+flowchart LR
+  A["Video idea"] --> B["Director pack"]
+  B --> C["Storyboard and reference assets"]
+  C --> D["Preproduction checks"]
+  D --> E["QC"]
+  E --> F["Generation handoff"]
+```
+
+## What Is Included
+
+- `skills/storyboard-video-director/`  
+  Builds storyboard-first director packs from plain-language briefs.
+
+- `skills/storyboard-video-qc/`  
+  Reviews packs before video generation.
+
+- `scripts/run_regression.py`  
+  Runs the public smoke/regression suite.
+
+- `examples/fan_kata_minimal/`  
+  A minimal public fixture showing the pack structure, reference asset roles, and final handoff.
+
+- `docs/`  
+  Workflow, QC policy, release boundary, and reproduction notes.
 
 ## Quick Start
 
+Requires Python 3.10+. The core scripts use the standard library; `Pillow` is optional and only improves image dimension checks.
+
 ```powershell
-python -m py_compile (Get-ChildItem skills\storyboard-video-director\scripts,skills\storyboard-video-qc\scripts -Filter *.py | ForEach-Object FullName)
 python scripts\run_regression.py
 ```
 
-Run the final preproduction chain against the public fixture:
+Expected output:
+
+```text
+Regression passed.
+- examples\fan_kata_minimal
+- product-lock prompt-only negative fixture
+- high-motion storyboard prompt-only negative fixture
+- SVG-only storyboard negative fixture
+```
+
+Run the final preproduction chain for the public fixture:
 
 ```powershell
 python skills\storyboard-video-director\scripts\preproduction_orchestrator.py examples\fan_kata_minimal --phase final
 ```
 
-Expected final outputs:
+Expected generated outputs:
 
 - `examples/fan_kata_minimal/16_preproduction_orchestrator_report.md`
 - `examples/fan_kata_minimal/17_generation_handoff/asset_manifest.json`
 - `examples/fan_kata_minimal/17_generation_handoff/video_prompt_for_upload.txt`
 - `examples/fan_kata_minimal/17_generation_handoff/handoff_readiness_report.md`
 
-## Installing the Skills in Codex
+## Create a Pack
+
+Start from a plain brief:
 
 ```powershell
-Copy-Item skills\storyboard-video-director $env:USERPROFILE\.codex\skills\storyboard-video-director -Recurse -Force
-Copy-Item skills\storyboard-video-qc $env:USERPROFILE\.codex\skills\storyboard-video-qc -Recurse -Force
+python skills\storyboard-video-director\scripts\create_pack_from_brief.py --brief "A 12-second fantasy clip: in an old library, a girl opens a book, pages spiral around her, and her coat turns into a glowing cloak. The transformation should be driven by her motion, not random magic. End with the cloak settling into a steady final pose."
 ```
 
-The repository copy and the installed Codex copy are separate. Re-copy after local edits when you want Codex to use the updated version.
+Then run preflight:
 
-## Production Handoff
+```powershell
+python skills\storyboard-video-director\scripts\preproduction_orchestrator.py <pack_dir> --phase preflight
+```
 
-Use `--phase final` when a pack is ready for expensive generation:
+Use final phase before real or expensive generation:
 
 ```powershell
 python skills\storyboard-video-director\scripts\preproduction_orchestrator.py <pack_dir> --phase final
 ```
 
-The handoff folder contains only platform-facing material:
+## Delivery Levels
 
-- `asset_manifest.json`: local upload files mapped to stable `@upload_ref` handles.
-- `video_prompt_for_upload.txt`: prompt written against upload refs, not local absolute paths.
-- `handoff_readiness_report.md`: pass/fail summary for generation readiness.
+- `iteration`: text planning and image-generation tasks for early drafts.
+- `preflight`: normal short-video/product-video readiness; required control assets must exist.
+- `final`: production handoff with strict asset checks and `17_generation_handoff/`.
 
-## Versioning
+For videos where a product, prop, character, or object must stay consistent, files such as `prop_reference`, `character_reference`, and `storyboard_control` are control assets, not decoration.
 
-The initial release line starts at:
+## Reference Asset Roles
+
+- `storyboard_control`: shot order, action path, timing, composition, and camera movement.
+- `character_reference`: identity, proportions, costume, face, and body language.
+- `prop_reference`: product/prop silhouette, scale, material, moving parts, and forbidden mutations.
+- `environment_reference`: geography, landmarks, lighting, and spatial continuity.
+- `style_reference`: render finish, line quality, palette, and lens tone.
+- `clean_keyframe_reference`: clean final-frame targets without arrows, labels, borders, text, or UI.
+
+## Use With Codex
+
+The repository contains standard Codex skill folders. Install or load `skills/storyboard-video-director/` and `skills/storyboard-video-qc/` according to your Codex environment.
+
+Example prompts:
+
+```text
+Use $storyboard-video-director to turn this idea into a storyboard-driven director pack.
+```
+
+```text
+Use $storyboard-video-qc to review whether this pack is ready for video generation.
+```
+
+## Open-Source Boundary
+
+The public repository should contain only reproducible code, docs, and examples. Do not commit private learning packs, local outputs, upload IDs, API keys, or assets whose redistribution rights are unclear.
+
+Before publishing changes:
+
+```powershell
+python scripts\check_open_source_readiness.py --allow-placeholder-images
+```
+
+See also:
+
+- [docs/publication_manifest.md](docs/publication_manifest.md)
+- [docs/open_source_release_checklist.md](docs/open_source_release_checklist.md)
+
+## Version
+
+Current release:
 
 ```text
 0.1.0-alpha
 ```
 
-Check repo, installed skill, and pack manifest versions:
+Check version consistency:
 
 ```powershell
-python scripts\check_skill_versions.py --package-dir examples\fan_kata_minimal
+python scripts\check_skill_versions.py --no-installed --package-dir examples\fan_kata_minimal
 ```
 
 ## Status
 
-The project is suitable for alpha/beta use. The core workflow is script-testable, but actual storyboard/image/video generation still depends on external model tools.
+This is an alpha-stage project. The pack structure, validators, and handoff pipeline are script-testable. Actual storyboard image generation, reference asset generation, and final video generation still depend on external image/video model tools.

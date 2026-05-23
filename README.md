@@ -1,150 +1,162 @@
 # Storyboard Driven AI Video
 
-Storyboard Driven AI Video 是一组用于 **故事板驱动 AI 视频生产** 的 Codex skills 和本地脚本。
+Storyboard Driven AI Video 是一套用于 **AI 视频预生产** 的 Codex skills 和脚本。它帮助你把一句视频想法整理成可执行的导演包：分镜节奏、控制策略、参考资产、质检报告，以及给视频模型或视频 agent 使用的最终 handoff。
 
-它的核心不是“直接写一个视频 prompt”，而是先把创意拆成可控的导演包：控制策略、分镜节奏、可视化故事板、角色/道具/环境/风格/干净关键帧参考资产、质检报告，以及最终给视频模型或视频 agent 使用的生产 handoff。
+这个项目不负责直接生成最终视频。它关注的是生成前最容易被忽略、却最影响成片稳定性的部分：**先把视频怎么拍说清楚，再让模型去生成。**
 
-English summary: see [README.en.md](README.en.md).
+English: [README.en.md](README.en.md)
 
-## 它解决什么问题
+## 为什么需要它
 
-AI 视频生成很容易出现这些问题：
+直接写一个视频 prompt 往往会遇到这些问题：
 
-- 故事板只变成一张图，没有被当作镜头顺序和动作控制。
-- 角色、道具、环境、风格、关键帧参考混在一起，导致模型误解。
-- 下游 prompt 太长、太散，或者把本地路径、标注箭头、面板边框带进最终视频。
-- 进入昂贵生成前没有严格质检。
+- 角色或产品在镜头之间变样。
+- 故事板只是一张参考图，没有真正控制镜头顺序、动作路径和节奏。
+- 角色、道具、环境、风格参考混在一起，模型不知道每张图该控制什么。
+- 下游 prompt 带入本地路径、故事板边框、箭头、标签或其他不该出现在最终视频里的信息。
+- 进入昂贵的视频生成前，没有明确的 readiness 检查。
 
-这个项目把流程拆成明确节点：先导演规划，再资产闭环，再严格 QC，最后生成可上传的生产 handoff。
-
-## 包含内容
-
-- `storyboard-video-director`：把普通语言视频想法整理成 storyboard-first director pack。
-- `storyboard-video-qc`：在视频生成前做生产质检。
-- `preproduction_orchestrator.py`：一键跑预生产链路。
-- `17_generation_handoff/`：最终给视频平台或视频 agent 使用的上传资产清单和 prompt。
-- `examples/fan_kata_minimal/`：可公开的最小回归样例。
-- `scripts/run_regression.py`：一键 smoke test。
-
-## 工作流
+本项目把这些问题拆成一个可检查的流程：
 
 ```mermaid
 flowchart LR
-  A["用户视频想法"] --> B["导演包 director pack"]
-  B --> C["故事板和参考资产"]
-  C --> D["预生产 orchestrator"]
-  D --> E["strict QC"]
-  E --> F["17_generation_handoff"]
-  F --> G["视频平台或视频 agent"]
+  A["Video idea"] --> B["Director pack"]
+  B --> C["Storyboard and reference assets"]
+  C --> D["Preproduction checks"]
+  D --> E["QC"]
+  E --> F["Generation handoff"]
 ```
 
-## 快速开始
+## 仓库内容
 
-核心脚本只依赖 Python 标准库。`Pillow` 是可选依赖，只用于增强图片尺寸检查。
+- `skills/storyboard-video-director/`  
+  将普通语言的视频想法整理成 storyboard-first director pack。
+
+- `skills/storyboard-video-qc/`  
+  在视频生成前检查导演包是否足够稳定。
+
+- `scripts/run_regression.py`  
+  公开回归测试，验证核心流程仍然可运行。
+
+- `examples/fan_kata_minimal/`  
+  一个最小公开样例，用来展示目录结构、参考资产角色和 final handoff。
+
+- `docs/`  
+  工作流、质检策略、发布边界和复现用例说明。
+
+## 快速试跑
+
+需要 Python 3.10+。核心脚本只使用标准库；`Pillow` 是可选依赖，用于更细的图片尺寸检查。
 
 ```powershell
-python -m py_compile (Get-ChildItem skills\storyboard-video-director\scripts,skills\storyboard-video-qc\scripts -Filter *.py | ForEach-Object FullName)
 python scripts\run_regression.py
 ```
 
-从普通用户 brief 创建一个第一版导演包：
+预期输出：
 
-```powershell
-python skills\storyboard-video-director\scripts\create_pack_from_brief.py --brief "我想做一个 12 秒的奇幻短片，一个普通女孩在旧图书馆里翻开一本书，纸页飞起来绕着她转，她的外套和书页一起变成发光的斗篷。变化要像是她的动作带出来的，不是突然魔法乱闪。最后她站定，斗篷慢慢落稳。"
+```text
+Regression passed.
+- examples\fan_kata_minimal
+- product-lock prompt-only negative fixture
+- high-motion storyboard prompt-only negative fixture
+- SVG-only storyboard negative fixture
 ```
 
-然后跑预生产链路：
-
-```powershell
-python skills\storyboard-video-director\scripts\preproduction_orchestrator.py production_packs\library_luminous_cloak --phase preflight --visual-storyboard-required
-```
-
-`16_user_preview_summary.md` 会生成一个面向用户的紧凑交付摘要，适合作为聊天回复和人工审稿入口。
-
-对公开样例跑 final 生产链路：
+你也可以单独对公开样例跑 final 预生产链路：
 
 ```powershell
 python skills\storyboard-video-director\scripts\preproduction_orchestrator.py examples\fan_kata_minimal --phase final
 ```
 
-预期输出：
+生成结果会出现在：
 
 - `examples/fan_kata_minimal/16_preproduction_orchestrator_report.md`
 - `examples/fan_kata_minimal/17_generation_handoff/asset_manifest.json`
 - `examples/fan_kata_minimal/17_generation_handoff/video_prompt_for_upload.txt`
 - `examples/fan_kata_minimal/17_generation_handoff/handoff_readiness_report.md`
 
-## 安装到 Codex
+## 创建自己的导演包
 
-本仓库里的 skill 副本和 Codex 已安装副本是分开的。要让 Codex 使用当前仓库版本，可以复制：
+从一个普通 brief 开始：
 
 ```powershell
-Copy-Item skills\storyboard-video-director $env:USERPROFILE\.codex\skills\storyboard-video-director -Recurse -Force
-Copy-Item skills\storyboard-video-qc $env:USERPROFILE\.codex\skills\storyboard-video-qc -Recurse -Force
+python skills\storyboard-video-director\scripts\create_pack_from_brief.py --brief "一个 12 秒奇幻短片：旧图书馆里，女孩翻开书，纸页绕着她飞起并变成发光斗篷。变化要由她的动作带出来，最后斗篷落稳。"
 ```
 
-以后改了仓库里的 skill，需要重新复制到 Codex skills 目录。
+这会创建一个初始 director pack。随后可以进入预生产检查：
 
-## 生产 Handoff
+```powershell
+python skills\storyboard-video-director\scripts\preproduction_orchestrator.py <pack_dir> --phase preflight
+```
 
-当一个 director pack 准备进入真实或昂贵的视频生成时，使用 final phase：
+如果你已经准备好进入真实或昂贵的视频生成，使用 final phase：
 
 ```powershell
 python skills\storyboard-video-director\scripts\preproduction_orchestrator.py <pack_dir> --phase final
 ```
 
-`--phase final` 会自动启用：
+## 交付等级
 
-- strict asset QC
-- 可视化故事板检查
-- final asset gate
-- visual asset review
-- preflight QC
-- `17_generation_handoff/` 生产交付包生成
+项目把交付分成三个等级：
 
-`17_generation_handoff/` 包含：
+- `iteration`：文本规划和提示词任务，适合早期草稿。
+- `preflight`：普通短片或产品片的生成前检查，要求关键参考资产真实存在。
+- `final`：进入视频平台或视频 agent 前的生产 handoff，要求严格资产检查和 `17_generation_handoff/`。
 
-- `asset_manifest.json`：上传图片文件和 `@upload_ref` 的映射。
-- `video_prompt_for_upload.txt`：使用上传引用的最终视频 prompt，不包含本机绝对路径。
-- `handoff_readiness_report.md`：是否可进入生成的 readiness 报告。
+对于产品、道具或角色需要保持一致的片子，`prop_reference`、`character_reference` 或 `storyboard_control` 不是装饰文件，而是控制资产。
 
 ## 参考资产角色
 
-- `storyboard_control`：控制镜头顺序、动作路径、节奏、镜头、构图。
-- `character_reference`：控制角色身份、服装、比例、脸、身体语言。
-- `prop_reference`：控制道具轮廓、尺度、材质、运动部件、禁止变形。
-- `environment_reference`：控制空间地理、地标、光线、连续性。
-- `style_reference`：控制渲染完成度、线条、色彩、镜头质感。
+- `storyboard_control`：控制镜头顺序、动作路径、节奏、构图和运镜。
+- `character_reference`：控制角色身份、比例、服装、脸和身体语言。
+- `prop_reference`：控制产品或道具的轮廓、材质、尺度、运动部件和禁止变形。
+- `environment_reference`：控制空间地理、地标、光线和连续性。
+- `style_reference`：控制渲染完成度、线条、色彩和镜头质感。
 - `clean_keyframe_reference`：控制干净最终画面，不应包含箭头、编号、边框、文字或 UI。
 
-## 仓库发布边界
+## 在 Codex 中使用
 
-默认 `.gitignore` 会排除私有学习包、生成包、本地输出和实验目录。公开示例应放在 `examples/` 下，并避免包含不可再分发的图片或视频资产。
+本仓库包含标准 Codex skill 目录。你可以将 `skills/storyboard-video-director/` 和 `skills/storyboard-video-qc/` 安装到自己的 Codex skills 目录，或按你使用的 Codex 环境提供的方式加载本地 skill。
 
-正式公开发布前，请参考：
+安装后可以用类似下面的请求触发：
+
+```text
+Use $storyboard-video-director to turn this idea into a storyboard-driven director pack.
+```
+
+```text
+Use $storyboard-video-qc to review whether this pack is ready for video generation.
+```
+
+## 开源边界
+
+公开仓库只包含可复现的代码、文档和示例。私有学习包、本地生成输出、平台上传 ID、API key、不可确认授权的素材不应提交。
+
+发布前可以运行：
+
+```powershell
+python scripts\check_open_source_readiness.py --allow-placeholder-images
+```
+
+更多说明见：
 
 - [docs/publication_manifest.md](docs/publication_manifest.md)
 - [docs/open_source_release_checklist.md](docs/open_source_release_checklist.md)
 
-## 版本管理
+## 版本
 
-当前起始版本：
+当前版本：
 
 ```text
 0.1.0-alpha
 ```
 
-每个 skill 都有独立版本文件：
-
-- `skills/storyboard-video-director/VERSION`
-- `skills/storyboard-video-qc/VERSION`
-
-`VERSION` 文件和 director pack 的 `10_generation_manifest.json` 会共同记录版本。`SKILL.md` frontmatter 遵循 Codex skill 规范，不放版本字段。检查版本一致性：
+检查 skill 与样例 manifest 的版本一致性：
 
 ```powershell
-python scripts\check_skill_versions.py --package-dir examples\fan_kata_minimal
+python scripts\check_skill_versions.py --no-installed --package-dir examples\fan_kata_minimal
 ```
 
-## 当前状态
+## 项目状态
 
-适合 alpha/beta 阶段使用。核心工作流已经可以脚本化测试，但真实的故事板图像生成、角色资产生成和最终视频生成仍依赖外部图像/视频模型工具。
+这是 alpha 阶段项目。目录结构、校验器和 handoff 流程已经可以脚本化测试；真实故事板图像生成、角色/产品资产生成和最终视频生成仍依赖外部图像/视频模型工具。
